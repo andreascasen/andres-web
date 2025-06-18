@@ -1,0 +1,26 @@
+message="$(cat $1)"
+
+# Valid commit types
+valid_types="feat|fix|task|test|doc"
+# Regular expression for the commit message format
+requiredPattern="^(${valid_types}):[[:space:]]+.*$"
+
+# ANSI escape code for red text
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+if ! [[ $message =~ $requiredPattern ]];
+then
+  echo "${RED}🚨 ----- Invalid commit message! 😕 -----${NC}"
+  echo "The commit message must have this format:"
+  echo "<commit type>: <commit description>"
+  echo "Valid commit types: feat, fix, chore, test, doc"
+  echo "Example: feat: Add user authentication"
+  echo ""
+  echo "Your commit message was:"
+  echo $message
+  echo ""
+  echo "For more information, check script in .husky/commit-msg"
+  echo "-----------------------------------"
+  exit 1
+fi
